@@ -21,104 +21,99 @@
             grid-template-columns:repeat(8,1fr);
         }
 
-        .white{
-            background:#f0d9b5;
-            width:60px;
-            height:60px;
-        }
+.white {
+    background-color: #f0d9b5;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
 
-       
-      .white,
-.black{
-    font-size:40px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}  .black{
-            background:#b58863;
-            width:60px;
-            height:60px;
-        }
+.black {
+    background-color: #b58863;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
     </style>
 </head>
 <body>
+<div id="board" class="board"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script src="script.js"></script>
+const game = new Chess();
+const boardElement = document.getElementById('board');
 
-<div class="board">
+// Stockfish botini ulash
+const stockfish = new Worker("https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js");
 
-<div class="white">♜</div>
-<div class="black">♞</div>
-<div class="white">♝</div>
-<div class="black">♛</div>
-<div class="white">♚</div>
-<div class="black">♝</div>
-<div class="white">♞</div>
-<div class="black">♜</div>
+stockfish.onmessage = function(event) {
+    console.log("Stockfish javobi:", event.data);
+    // Bot eng yaxshi yurishni aytganda uni ekranda ko'rsatish qismini keyin qo'shamiz
+};
+stockfish.postMessage("uci");
 
-<div class="black">♟</div>
-<div class="white">♟</div>
-<div class="black">♟</div>
-<div class="white">♟</div>
-<div class="black">♟</div>
-<div class="white">♟</div>
-<div class="black">♟</div>
-<div class="white">♟</div>
+// Taxtani chizish funksiyasi
+function drawBoard() {
+    boardElement.innerHTML = '';
+    const board = game.board();
 
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            const square = document.createElement('div');
+            // Rangini aniqlash
+            square.className = (r + c) % 2 === 0 ? 'white' : 'black';
+            // Koordinatasini saqlash (masalan: e2, e4)
+            square.dataset.pos = String.fromCharCode(97 + c) + (8 - r);
+            
+            const piece = board[r][c];
+            if (piece) {
+                square.innerText = getSymbol(piece.type, piece.color);
+            }
 
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
+            square.onclick = () => handleMove(square.dataset.pos);
+            boardElement.appendChild(square);
+        }
+    }
+}
 
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
+// Dona belgilarini olish
+function getSymbol(t, c) {
+    const s = {p:'♟', r:'♜', n:'♞', b:'♝', q:'♛', k:'♚'};
+    return s[t];
+}
 
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
+let from = null;
 
-<div class="white">♙</div>
-<div class="black">♙</div>
-<div class="white">♙</div>
-<div class="black">♙</div>
-<div class="white">♙</div>
-<div class="black">♙</div>
-<div class="white">♙</div>
-<div class="black">♙</div>
+// Yurishni boshqarish
+function handleMove(to) {
+    if (!from) {
+        if (game.get(to)) {
+            from = to;
+            // Tanlangan katakni belgilash (ixtiyoriy)
+            console.log("Tanlandi:", from);
+        }
+    } else {
+        const move = game.move({ from: from, to: to, promotion: 'q' });
+        
+        if (move) {
+            drawBoard(); // Yurish to'g'ri bo'lsa taxtani qayta chizish
+            stockfish.postMessage("position fen " + game.fen());
+            stockfish.postMessage("go depth 10");
+        } else {
+            console.log("Noqonuniy yurish!");
+        }
+        from = null;
+    }
+}
 
-<div class="black">♖</div>
-<div class="white">♘</div>
-<div class="black">♗</div>
-<div class="white">♕</div>
-<div class="black">♔</div>
-<div class="white">♗</div>
-<div class="black">♘</div>
-<div class="white">♖</div>
-
-</div>
-
+// O'yinni boshlash
+drawBoard();
 
 <script src="script.js"></script>
 
