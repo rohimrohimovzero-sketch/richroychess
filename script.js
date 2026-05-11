@@ -1,4 +1,4 @@
-const game = new Chess();
+// const game = new Chess();
 
 const pieces = document.querySelectorAll(".white, .black");
 
