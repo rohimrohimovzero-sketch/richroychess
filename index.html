@@ -1,127 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RichRoyChess</title>
+<meta charset="UTF-8">
+<title>RichRoyChess</title>
 
-    <style>
-        body{
-            background:black;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard-1.0.0.min.css">
 
-        .board{
-            width:480px;
-            height:480px;
-            display:grid;
-            grid-template-columns:repeat(8,1fr);
-        }
+<style>
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:black;
+}
 
-        .white{
-            background:#f0d9b5;
-            width:60px;
-            height:60px;
-        }
-
-       
-      .white,
-.black{
-    font-size:40px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}  .black{
-            background:#b58863;
-            width:60px;
-            height:60px;
-        }
-    </style>
+#board{
+width:500px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="board">
-
-<div class="white">♜</div>
-<div class="black">♞</div>
-<div class="white">♝</div>
-<div class="black">♛</div>
-<div class="white">♚</div>
-<div class="black">♝</div>
-<div class="white">♞</div>
-<div class="black">♜</div>
-
-<div class="black">♟</div>
-<div class="white">♟</div>
-<div class="black">♟</div>
-<div class="white">♟</div>
-<div class="black">♟</div>
-<div class="white">♟</div>
-<div class="black">♟</div>
-<div class="white">♟</div>
-
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-<div class="black"></div>
-<div class="white"></div>
-
-<div class="white">♙</div>
-<div class="black">♙</div>
-<div class="white">♙</div>
-<div class="black">♙</div>
-<div class="white">♙</div>
-<div class="black">♙</div>
-<div class="white">♙</div>
-<div class="black">♙</div>
-
-<div class="black">♖</div>
-<div class="white">♘</div>
-<div class="black">♗</div>
-<div class="white">♕</div>
-<div class="black">♔</div>
-<div class="white">♗</div>
-<div class="black">♘</div>
-<div class="white">♖</div>
-
-</div>
-
+<h1 style="color:lime;">SALOM RICHROYCHESS</h1>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-<script src="script.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard-1.0.0.min.js"></script>
+
+<script>
+var board = Chessboard('board', {
+position: 'start'
+});
+</script>
 
 </body>
 </html>
