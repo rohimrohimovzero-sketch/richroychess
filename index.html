@@ -16,13 +16,37 @@ height:100vh;
 background:black;
 }
 
+<<<<<<< HEAD
 #board{
 width:500px;
 }
 </style>
+=======
+.white {
+    background-color: #f0d9b5;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+
+.black {
+    background-color: #b58863;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+    </style>
+>>>>>>> bdd42a99387e5ee569349649f5a44b6fc8c64a8a
 </head>
 
 <body>
+<<<<<<< HEAD
 
 <h1 style="color:lime;">SALOM RICHROYCHESS</h1>
 
@@ -35,6 +59,81 @@ var board = Chessboard('board', {
 position: 'start'
 });
 </script>
+=======
+<div id="board" class="board"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script src="script.js"></script>
+const game = new Chess();
+const boardElement = document.getElementById('board');
+
+// Stockfish botini ulash
+const stockfish = new Worker("https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js");
+
+stockfish.onmessage = function(event) {
+    console.log("Stockfish javobi:", event.data);
+    // Bot eng yaxshi yurishni aytganda uni ekranda ko'rsatish qismini keyin qo'shamiz
+};
+stockfish.postMessage("uci");
+
+// Taxtani chizish funksiyasi
+function drawBoard() {
+    boardElement.innerHTML = '';
+    const board = game.board();
+
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            const square = document.createElement('div');
+            // Rangini aniqlash
+            square.className = (r + c) % 2 === 0 ? 'white' : 'black';
+            // Koordinatasini saqlash (masalan: e2, e4)
+            square.dataset.pos = String.fromCharCode(97 + c) + (8 - r);
+            
+            const piece = board[r][c];
+            if (piece) {
+                square.innerText = getSymbol(piece.type, piece.color);
+            }
+
+            square.onclick = () => handleMove(square.dataset.pos);
+            boardElement.appendChild(square);
+        }
+    }
+}
+
+// Dona belgilarini olish
+function getSymbol(t, c) {
+    const s = {p:'♟', r:'♜', n:'♞', b:'♝', q:'♛', k:'♚'};
+    return s[t];
+}
+
+let from = null;
+
+// Yurishni boshqarish
+function handleMove(to) {
+    if (!from) {
+        if (game.get(to)) {
+            from = to;
+            // Tanlangan katakni belgilash (ixtiyoriy)
+            console.log("Tanlandi:", from);
+        }
+    } else {
+        const move = game.move({ from: from, to: to, promotion: 'q' });
+        
+        if (move) {
+            drawBoard(); // Yurish to'g'ri bo'lsa taxtani qayta chizish
+            stockfish.postMessage("position fen " + game.fen());
+            stockfish.postMessage("go depth 10");
+        } else {
+            console.log("Noqonuniy yurish!");
+        }
+        from = null;
+    }
+}
+
+// O'yinni boshlash
+drawBoard();
+
+<script src="script.js"></script>
+>>>>>>> bdd42a99387e5ee569349649f5a44b6fc8c64a8a
 
 </body>
 </html>
